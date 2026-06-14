@@ -13,6 +13,7 @@ body{
   background: linear-gradient(135deg,#ffd6e7,#dff6ff);
 }
 
+/* HEADER */
 header{
   background:#ff5c8a;
   color:white;
@@ -21,9 +22,9 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-
 header h1{margin:0;}
 
+/* CONTAINER */
 .container{
   max-width:800px;
   margin:40px auto;
@@ -42,35 +43,58 @@ button{
   cursor:pointer;
   background:#ff5c8a;
   color:white;
-  margin-top:10px;
+  font-size:15px;
+  font-weight:bold;
 }
 
+/* QUESTION */
 .question{
   font-size:20px;
   margin:20px 0;
 }
 
+/* OPTIONS - NEW COLORFUL STYLE */
 .option{
   display:block;
   width:100%;
   margin:10px 0;
-  padding:12px;
-  border-radius:12px;
+  padding:14px;
+  border-radius:15px;
   border:none;
-  background:#f1f5ff;
   cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+  color:#222;
+  background: linear-gradient(135deg,#ffffff,#f1f5ff);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
 }
 
 .option:hover{
-  background:#e0ecff;
+  transform: scale(1.04);
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  color:white;
+  box-shadow: 0 10px 25px rgba(255,92,138,0.3);
 }
 
+.option:active{
+  transform: scale(0.97);
+}
+
+/* RESULT */
 .score{
-  font-size:40px;
+  font-size:42px;
   color:#ff5c8a;
   text-align:center;
 }
 
+footer{
+  text-align:center;
+  padding:15px;
+  background:#222;
+  color:white;
+  margin-top:40px;
+}
 </style>
 </head>
 
@@ -80,28 +104,35 @@ button{
   <h1>IQCUTE 🧠✨</h1>
 </header>
 
+<!-- HOME -->
 <div class="container" id="home">
-  <h2>Welcome 💖</h2>
-  <p>30 random IQ questions every time!</p>
+  <h2>Welcome to IQCUTE 💖</h2>
+  <p>Answer 30 random brain questions and check your IQ level!</p>
   <button onclick="startQuiz()">Start Quiz</button>
 </div>
 
+<!-- QUIZ -->
 <div class="container hidden" id="quizBox">
   <div id="counter"></div>
   <div class="question" id="question"></div>
   <div id="options"></div>
 </div>
 
+<!-- RESULT -->
 <div class="container hidden" id="resultBox">
   <h2>Result 🎉</h2>
   <div class="score" id="iqScore"></div>
   <p id="message"></p>
-  <button onclick="startQuiz()">Try Again</button>
+  <button onclick="startQuiz()">Try Again 🔁</button>
 </div>
+
+<footer>
+  © 2026 IQCUTE | Fun Brain Test Website
+</footer>
 
 <script>
 
-/* ===== QUESTION BANK ===== */
+/* ===== QUESTION BANK (expand to 1000 anytime) ===== */
 const bank = [
 {q:"2,4,8,16,?",a:["18","24","32","36"],c:2},
 {q:"5+7=?",a:["10","11","12","13"],c:2},
@@ -113,7 +144,7 @@ const bank = [
 {q:"A C E ?",a:["F","G","H","I"],c:1},
 {q:"1+1=?",a:["1","2","3","4"],c:1},
 {q:"8x8=?",a:["54","64","74","84"],c:1},
-{q:"Dog is a?",a:["Bird","Mammal","Fish","Plant"],c:1},
+{q:"Dog is?",a:["Bird","Mammal","Fish","Plant"],c:1},
 {q:"Sun rises in?",a:["West","North","East","South"],c:2},
 {q:"Water formula?",a:["H2O","CO2","O2","NaCl"],c:0},
 {q:"3x3=?",a:["6","9","12","15"],c:1},
@@ -158,7 +189,7 @@ function showQ(){
   let q = quiz[i];
 
   document.getElementById("counter").innerText =
-    `Question ${i+1}/30`;
+    `Question ${i+1} / 30`;
 
   document.getElementById("question").innerText = q.q;
 
@@ -187,7 +218,7 @@ function result(){
   document.getElementById("quizBox").classList.add("hidden");
   document.getElementById("resultBox").classList.remove("hidden");
 
-  let iq = 80 + (score * 2); // simple IQ formula
+  let iq = 80 + (score * 2);
 
   document.getElementById("iqScore").innerText =
     "Your IQ Score is: " + iq;
@@ -198,8 +229,6 @@ function result(){
   else if(score >= 18) msg = "✨ Very Smart!";
   else if(score >= 12) msg = "😊 Good!";
   else msg = "💡 Keep Practicing!";
-
-  document.getElementById("message").innerText = msg;
 }
 
 </script>
