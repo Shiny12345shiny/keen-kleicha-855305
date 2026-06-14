@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQCUTE 🧠✨</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial;
+  background: linear-gradient(135deg,#ffd6e7,#dff6ff);
+}
+
+header{
+  background:#ff5c8a;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header h1{margin:0;}
+
+.container{
+  max-width:800px;
+  margin:40px auto;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.hidden{display:none;}
+
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#ff5c8a;
+  color:white;
+  margin-top:10px;
+}
+
+.question{
+  font-size:20px;
+  margin:20px 0;
+}
+
+.option{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:#f1f5ff;
+  cursor:pointer;
+}
+
+.option:hover{
+  background:#e0ecff;
+}
+
+.score{
+  font-size:40px;
+  color:#ff5c8a;
+  text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>IQCUTE 🧠✨</h1>
+</header>
+
+<div class="container" id="home">
+  <h2>Welcome 💖</h2>
+  <p>30 random IQ questions every time!</p>
+  <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<div class="container hidden" id="quizBox">
+  <div id="counter"></div>
+  <div class="question" id="question"></div>
+  <div id="options"></div>
+</div>
+
+<div class="container hidden" id="resultBox">
+  <h2>Result 🎉</h2>
+  <div class="score" id="iqScore"></div>
+  <p id="message"></p>
+  <button onclick="startQuiz()">Try Again</button>
+</div>
+
+<script>
+
+/* ===== QUESTION BANK ===== */
+const bank = [
+{q:"2,4,8,16,?",a:["18","24","32","36"],c:2},
+{q:"5+7=?",a:["10","11","12","13"],c:2},
+{q:"Odd one?",a:["Apple","Car","Banana","Orange"],c:1},
+{q:"10x2=?",a:["20","22","18","25"],c:0},
+{q:"Square of 3?",a:["6","9","12","15"],c:1},
+{q:"7+8=?",a:["14","15","16","17"],c:1},
+{q:"Opposite of hot?",a:["Cold","Warm","Dry","Cool"],c:0},
+{q:"A C E ?",a:["F","G","H","I"],c:1},
+{q:"1+1=?",a:["1","2","3","4"],c:1},
+{q:"8x8=?",a:["54","64","74","84"],c:1},
+{q:"Dog is a?",a:["Bird","Mammal","Fish","Plant"],c:1},
+{q:"Sun rises in?",a:["West","North","East","South"],c:2},
+{q:"Water formula?",a:["H2O","CO2","O2","NaCl"],c:0},
+{q:"3x3=?",a:["6","9","12","15"],c:1},
+{q:"Capital of India?",a:["Delhi","Mumbai","Chennai","Kolkata"],c:0},
+{q:"5x5=?",a:["10","20","25","30"],c:2},
+{q:"Days in week?",a:["5","6","7","8"],c:2},
+{q:"10-3=?",a:["6","7","8","9"],c:1},
+{q:"Bird?",a:["Dog","Parrot","Cat","Cow"],c:1},
+{q:"12/2=?",a:["5","6","7","8"],c:1},
+{q:"9+9=?",a:["16","17","18","19"],c:2},
+{q:"4x4=?",a:["12","14","16","18"],c:2},
+{q:"Capital of France?",a:["Rome","Paris","Berlin","Madrid"],c:1},
+{q:"2x6=?",a:["10","11","12","13"],c:2},
+{q:"15-5=?",a:["10","11","12","13"],c:0},
+{q:"Largest ocean?",a:["Atlantic","Indian","Pacific","Arctic"],c:2},
+{q:"100/10=?",a:["5","10","15","20"],c:1},
+{q:"6+6=?",a:["10","11","12","13"],c:2},
+{q:"Planet?",a:["Moon","Earth","Star","Cloud"],c:1},
+{q:"3+7=?",a:["9","10","11","12"],c:1},
+{q:"Whale is?",a:["Fish","Mammal","Bird","Insect"],c:1}
+];
+
+let quiz=[],i=0,score=0;
+
+function shuffle(a){
+  return [...a].sort(()=>Math.random()-0.5);
+}
+
+function startQuiz(){
+  quiz = shuffle(bank).slice(0,30);
+  i=0;
+  score=0;
+
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("resultBox").classList.add("hidden");
+  document.getElementById("quizBox").classList.remove("hidden");
+
+  showQ();
+}
+
+function showQ(){
+  let q = quiz[i];
+
+  document.getElementById("counter").innerText =
+    `Question ${i+1}/30`;
+
+  document.getElementById("question").innerText = q.q;
+
+  let html = "";
+
+  q.a.forEach((opt,idx)=>{
+    html += `<button class="option" onclick="ans(${idx})">${opt}</button>`;
+  });
+
+  document.getElementById("options").innerHTML = html;
+}
+
+function ans(x){
+  if(x === quiz[i].c) score++;
+
+  i++;
+
+  if(i < quiz.length){
+    showQ();
+  }else{
+    result();
+  }
+}
+
+function result(){
+  document.getElementById("quizBox").classList.add("hidden");
+  document.getElementById("resultBox").classList.remove("hidden");
+
+  let iq = 80 + (score * 2); // simple IQ formula
+
+  document.getElementById("iqScore").innerText =
+    "Your IQ Score is: " + iq;
+
+  let msg = "";
+
+  if(score >= 25) msg = "🌟 Genius Level!";
+  else if(score >= 18) msg = "✨ Very Smart!";
+  else if(score >= 12) msg = "😊 Good!";
+  else msg = "💡 Keep Practicing!";
+
+  document.getElementById("message").innerText = msg;
+}
+
+</script>
+
+</body>
+</html>
